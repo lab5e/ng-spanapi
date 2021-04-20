@@ -11,11 +11,13 @@ configuration.ts
 encoder.ts
 index.ts
 model/broadcastMessageRequest.ts
+model/clearFirmwareErrorResponse.ts
 model/coAPMetadata.ts
 model/collection.ts
 model/collectionFirmware.ts
 model/collectionFirmwareFirmwareManagement.ts
 model/createFirmwareRequest.ts
+model/dataDumpRequest.ts
 model/dataDumpResponse.ts
 model/device.ts
 model/dumpedCollection.ts
@@ -44,6 +46,7 @@ model/outputType.ts
 model/protobufAny.ts
 model/rpcStatus.ts
 model/sendMessageRequest.ts
+model/sendMessageResponse.ts
 model/systemInfoResponse.ts
 model/uDPMetadata.ts
 model/updateDeviceRequest.ts
