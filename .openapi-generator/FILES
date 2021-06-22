@@ -20,6 +20,7 @@ model/createFirmwareRequest.ts
 model/dataDumpRequest.ts
 model/dataDumpResponse.ts
 model/device.ts
+model/deviceMetadata.ts
 model/dumpedCollection.ts
 model/dumpedDevice.ts
 model/fieldMask.ts
@@ -35,6 +36,7 @@ model/messageSendResult.ts
 model/models.ts
 model/multiSendMessageResponse.ts
 model/networkMetadata.ts
+model/networkOperator.ts
 model/output.ts
 model/outputConfig.ts
 model/outputDataMessage.ts

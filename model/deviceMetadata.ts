@@ -9,10 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Device } from './device';
+import { NetworkOperator } from './networkOperator';
 
 
-export interface DumpedDevice { 
-    device?: Device;
+export interface DeviceMetadata { 
+    simOperator?: NetworkOperator;
 }
 
