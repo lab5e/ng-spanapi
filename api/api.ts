@@ -1,7 +1,5 @@
 export * from './collections.service';
 import { CollectionsService } from './collections.service';
-export * from './datadump.service';
-import { DatadumpService } from './datadump.service';
 export * from './devices.service';
 import { DevicesService } from './devices.service';
 export * from './fota.service';
@@ -10,4 +8,4 @@ export * from './outputs.service';
 import { OutputsService } from './outputs.service';
 export * from './system.service';
 import { SystemService } from './system.service';
-export const APIS = [CollectionsService, DatadumpService, DevicesService, FotaService, OutputsService, SystemService];
+export const APIS = [CollectionsService, DevicesService, FotaService, OutputsService, SystemService];

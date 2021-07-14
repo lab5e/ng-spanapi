@@ -2,7 +2,6 @@ README.md
 api.module.ts
 api/api.ts
 api/collections.service.ts
-api/datadump.service.ts
 api/devices.service.ts
 api/fota.service.ts
 api/outputs.service.ts
@@ -17,12 +16,8 @@ model/collection.ts
 model/collectionFirmware.ts
 model/collectionFirmwareFirmwareManagement.ts
 model/createFirmwareRequest.ts
-model/dataDumpRequest.ts
-model/dataDumpResponse.ts
 model/device.ts
 model/deviceMetadata.ts
-model/dumpedCollection.ts
-model/dumpedDevice.ts
 model/fieldMask.ts
 model/firmware.ts
 model/firmwareMetadata.ts
