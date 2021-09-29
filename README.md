@@ -1,4 +1,4 @@
-## @lab5e/ng-spanapi@4.1.17
+## @lab5e/ng-spanapi@4.1.18
 
 ### Building
 
@@ -19,7 +19,7 @@ Navigate to the folder of your consuming project and run one of next commands.
 _published:_
 
 ```
-npm install @lab5e/ng-spanapi@4.1.17 --save
+npm install @lab5e/ng-spanapi@4.1.18 --save
 ```
 
 _without publishing (not recommended):_
