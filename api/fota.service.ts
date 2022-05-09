@@ -13,27 +13,18 @@
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
-        }       from '@angular/common/http';
+         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-// @ts-ignore
-import { ClearFirmwareErrorResponse } from '../model/clearFirmwareErrorResponse';
-// @ts-ignore
-import { CreateFirmwareRequest } from '../model/createFirmwareRequest';
-// @ts-ignore
-import { Firmware } from '../model/firmware';
-// @ts-ignore
-import { FirmwareUsageResponse } from '../model/firmwareUsageResponse';
-// @ts-ignore
-import { ListFirmwareResponse } from '../model/listFirmwareResponse';
-// @ts-ignore
-import { Status } from '../model/status';
-// @ts-ignore
-import { UpdateFirmwareRequest } from '../model/updateFirmwareRequest';
+import { ClearFirmwareErrorResponse } from '../model/models';
+import { CreateFirmwareRequest } from '../model/models';
+import { Firmware } from '../model/models';
+import { FirmwareUsageResponse } from '../model/models';
+import { ListFirmwareResponse } from '../model/models';
+import { Status } from '../model/models';
+import { UpdateFirmwareRequest } from '../model/models';
 
-// @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
@@ -140,10 +131,10 @@ export class FotaService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public clearFirmwareError(requestParameters: ClearFirmwareErrorRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ClearFirmwareErrorResponse>;
-    public clearFirmwareError(requestParameters: ClearFirmwareErrorRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ClearFirmwareErrorResponse>>;
-    public clearFirmwareError(requestParameters: ClearFirmwareErrorRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ClearFirmwareErrorResponse>>;
-    public clearFirmwareError(requestParameters: ClearFirmwareErrorRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public clearFirmwareError(requestParameters: ClearFirmwareErrorRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ClearFirmwareErrorResponse>;
+    public clearFirmwareError(requestParameters: ClearFirmwareErrorRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ClearFirmwareErrorResponse>>;
+    public clearFirmwareError(requestParameters: ClearFirmwareErrorRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ClearFirmwareErrorResponse>>;
+    public clearFirmwareError(requestParameters: ClearFirmwareErrorRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const collectionId = requestParameters.collectionId;
         if (collectionId === null || collectionId === undefined) {
             throw new Error('Required parameter collectionId was null or undefined when calling clearFirmwareError.');
@@ -153,51 +144,38 @@ export class FotaService {
             throw new Error('Required parameter deviceId was null or undefined when calling clearFirmwareError.');
         }
 
-        let localVarHeaders = this.defaultHeaders;
+        let headers = this.defaultHeaders;
 
-        let localVarCredential: string | undefined;
+        let credential: string | undefined;
         // authentication (APIToken) required
-        localVarCredential = this.configuration.lookupCredential('APIToken');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('X-API-Token', localVarCredential);
+        credential = this.configuration.lookupCredential('APIToken');
+        if (credential) {
+            headers = headers.set('X-API-Token', credential);
         }
 
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'application/json'
             ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
         }
 
         return this.httpClient.delete<ClearFirmwareErrorResponse>(`${this.configuration.basePath}/span/collections/${encodeURIComponent(String(collectionId))}/devices/${encodeURIComponent(String(deviceId))}/fwerror`,
-            null,
             {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
+                headers: headers,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -210,10 +188,10 @@ export class FotaService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createFirmware(requestParameters: CreateFirmwareRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Firmware>;
-    public createFirmware(requestParameters: CreateFirmwareRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Firmware>>;
-    public createFirmware(requestParameters: CreateFirmwareRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Firmware>>;
-    public createFirmware(requestParameters: CreateFirmwareRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public createFirmware(requestParameters: CreateFirmwareRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Firmware>;
+    public createFirmware(requestParameters: CreateFirmwareRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Firmware>>;
+    public createFirmware(requestParameters: CreateFirmwareRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Firmware>>;
+    public createFirmware(requestParameters: CreateFirmwareRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const collectionId = requestParameters.collectionId;
         if (collectionId === null || collectionId === undefined) {
             throw new Error('Required parameter collectionId was null or undefined when calling createFirmware.');
@@ -223,30 +201,25 @@ export class FotaService {
             throw new Error('Required parameter body was null or undefined when calling createFirmware.');
         }
 
-        let localVarHeaders = this.defaultHeaders;
+        let headers = this.defaultHeaders;
 
-        let localVarCredential: string | undefined;
+        let credential: string | undefined;
         // authentication (APIToken) required
-        localVarCredential = this.configuration.lookupCredential('APIToken');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('X-API-Token', localVarCredential);
+        credential = this.configuration.lookupCredential('APIToken');
+        if (credential) {
+            headers = headers.set('X-API-Token', credential);
         }
 
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'application/json'
             ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
@@ -256,27 +229,20 @@ export class FotaService {
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+            headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
         }
 
         return this.httpClient.post<Firmware>(`${this.configuration.basePath}/span/collections/${encodeURIComponent(String(collectionId))}/firmware`,
             body,
             {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
+                headers: headers,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -289,10 +255,10 @@ export class FotaService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteFirmware(requestParameters: DeleteFirmwareRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Firmware>;
-    public deleteFirmware(requestParameters: DeleteFirmwareRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Firmware>>;
-    public deleteFirmware(requestParameters: DeleteFirmwareRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Firmware>>;
-    public deleteFirmware(requestParameters: DeleteFirmwareRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public deleteFirmware(requestParameters: DeleteFirmwareRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Firmware>;
+    public deleteFirmware(requestParameters: DeleteFirmwareRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Firmware>>;
+    public deleteFirmware(requestParameters: DeleteFirmwareRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Firmware>>;
+    public deleteFirmware(requestParameters: DeleteFirmwareRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const collectionId = requestParameters.collectionId;
         if (collectionId === null || collectionId === undefined) {
             throw new Error('Required parameter collectionId was null or undefined when calling deleteFirmware.');
@@ -302,51 +268,38 @@ export class FotaService {
             throw new Error('Required parameter imageId was null or undefined when calling deleteFirmware.');
         }
 
-        let localVarHeaders = this.defaultHeaders;
+        let headers = this.defaultHeaders;
 
-        let localVarCredential: string | undefined;
+        let credential: string | undefined;
         // authentication (APIToken) required
-        localVarCredential = this.configuration.lookupCredential('APIToken');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('X-API-Token', localVarCredential);
+        credential = this.configuration.lookupCredential('APIToken');
+        if (credential) {
+            headers = headers.set('X-API-Token', credential);
         }
 
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'application/json'
             ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
         }
 
         return this.httpClient.delete<Firmware>(`${this.configuration.basePath}/span/collections/${encodeURIComponent(String(collectionId))}/firmware/${encodeURIComponent(String(imageId))}`,
-            null,
             {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
+                headers: headers,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -359,10 +312,10 @@ export class FotaService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public firmwareUsage(requestParameters: FirmwareUsageRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<FirmwareUsageResponse>;
-    public firmwareUsage(requestParameters: FirmwareUsageRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<FirmwareUsageResponse>>;
-    public firmwareUsage(requestParameters: FirmwareUsageRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<FirmwareUsageResponse>>;
-    public firmwareUsage(requestParameters: FirmwareUsageRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public firmwareUsage(requestParameters: FirmwareUsageRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<FirmwareUsageResponse>;
+    public firmwareUsage(requestParameters: FirmwareUsageRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<FirmwareUsageResponse>>;
+    public firmwareUsage(requestParameters: FirmwareUsageRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<FirmwareUsageResponse>>;
+    public firmwareUsage(requestParameters: FirmwareUsageRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const collectionId = requestParameters.collectionId;
         if (collectionId === null || collectionId === undefined) {
             throw new Error('Required parameter collectionId was null or undefined when calling firmwareUsage.');
@@ -372,50 +325,38 @@ export class FotaService {
             throw new Error('Required parameter imageId was null or undefined when calling firmwareUsage.');
         }
 
-        let localVarHeaders = this.defaultHeaders;
+        let headers = this.defaultHeaders;
 
-        let localVarCredential: string | undefined;
+        let credential: string | undefined;
         // authentication (APIToken) required
-        localVarCredential = this.configuration.lookupCredential('APIToken');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('X-API-Token', localVarCredential);
+        credential = this.configuration.lookupCredential('APIToken');
+        if (credential) {
+            headers = headers.set('X-API-Token', credential);
         }
 
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'application/json'
             ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
         }
 
         return this.httpClient.get<FirmwareUsageResponse>(`${this.configuration.basePath}/span/collections/${encodeURIComponent(String(collectionId))}/firmware/${encodeURIComponent(String(imageId))}/usage`,
             {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
+                headers: headers,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -428,59 +369,47 @@ export class FotaService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public listFirmware(requestParameters: ListFirmwareRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ListFirmwareResponse>;
-    public listFirmware(requestParameters: ListFirmwareRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ListFirmwareResponse>>;
-    public listFirmware(requestParameters: ListFirmwareRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ListFirmwareResponse>>;
-    public listFirmware(requestParameters: ListFirmwareRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public listFirmware(requestParameters: ListFirmwareRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ListFirmwareResponse>;
+    public listFirmware(requestParameters: ListFirmwareRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ListFirmwareResponse>>;
+    public listFirmware(requestParameters: ListFirmwareRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ListFirmwareResponse>>;
+    public listFirmware(requestParameters: ListFirmwareRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const collectionId = requestParameters.collectionId;
         if (collectionId === null || collectionId === undefined) {
             throw new Error('Required parameter collectionId was null or undefined when calling listFirmware.');
         }
 
-        let localVarHeaders = this.defaultHeaders;
+        let headers = this.defaultHeaders;
 
-        let localVarCredential: string | undefined;
+        let credential: string | undefined;
         // authentication (APIToken) required
-        localVarCredential = this.configuration.lookupCredential('APIToken');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('X-API-Token', localVarCredential);
+        credential = this.configuration.lookupCredential('APIToken');
+        if (credential) {
+            headers = headers.set('X-API-Token', credential);
         }
 
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'application/json'
             ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
         }
 
         return this.httpClient.get<ListFirmwareResponse>(`${this.configuration.basePath}/span/collections/${encodeURIComponent(String(collectionId))}/firmware`,
             {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
+                headers: headers,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -493,10 +422,10 @@ export class FotaService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public retrieveFirmware(requestParameters: RetrieveFirmwareRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Firmware>;
-    public retrieveFirmware(requestParameters: RetrieveFirmwareRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Firmware>>;
-    public retrieveFirmware(requestParameters: RetrieveFirmwareRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Firmware>>;
-    public retrieveFirmware(requestParameters: RetrieveFirmwareRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public retrieveFirmware(requestParameters: RetrieveFirmwareRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Firmware>;
+    public retrieveFirmware(requestParameters: RetrieveFirmwareRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Firmware>>;
+    public retrieveFirmware(requestParameters: RetrieveFirmwareRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Firmware>>;
+    public retrieveFirmware(requestParameters: RetrieveFirmwareRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const collectionId = requestParameters.collectionId;
         if (collectionId === null || collectionId === undefined) {
             throw new Error('Required parameter collectionId was null or undefined when calling retrieveFirmware.');
@@ -506,50 +435,38 @@ export class FotaService {
             throw new Error('Required parameter imageId was null or undefined when calling retrieveFirmware.');
         }
 
-        let localVarHeaders = this.defaultHeaders;
+        let headers = this.defaultHeaders;
 
-        let localVarCredential: string | undefined;
+        let credential: string | undefined;
         // authentication (APIToken) required
-        localVarCredential = this.configuration.lookupCredential('APIToken');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('X-API-Token', localVarCredential);
+        credential = this.configuration.lookupCredential('APIToken');
+        if (credential) {
+            headers = headers.set('X-API-Token', credential);
         }
 
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'application/json'
             ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
         }
 
         return this.httpClient.get<Firmware>(`${this.configuration.basePath}/span/collections/${encodeURIComponent(String(collectionId))}/firmware/${encodeURIComponent(String(imageId))}`,
             {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
+                headers: headers,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -563,10 +480,10 @@ export class FotaService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateFirmware(requestParameters: UpdateFirmwareRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Firmware>;
-    public updateFirmware(requestParameters: UpdateFirmwareRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Firmware>>;
-    public updateFirmware(requestParameters: UpdateFirmwareRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Firmware>>;
-    public updateFirmware(requestParameters: UpdateFirmwareRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public updateFirmware(requestParameters: UpdateFirmwareRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Firmware>;
+    public updateFirmware(requestParameters: UpdateFirmwareRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Firmware>>;
+    public updateFirmware(requestParameters: UpdateFirmwareRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Firmware>>;
+    public updateFirmware(requestParameters: UpdateFirmwareRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const existingCollectionId = requestParameters.existingCollectionId;
         if (existingCollectionId === null || existingCollectionId === undefined) {
             throw new Error('Required parameter existingCollectionId was null or undefined when calling updateFirmware.');
@@ -580,30 +497,25 @@ export class FotaService {
             throw new Error('Required parameter body was null or undefined when calling updateFirmware.');
         }
 
-        let localVarHeaders = this.defaultHeaders;
+        let headers = this.defaultHeaders;
 
-        let localVarCredential: string | undefined;
+        let credential: string | undefined;
         // authentication (APIToken) required
-        localVarCredential = this.configuration.lookupCredential('APIToken');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('X-API-Token', localVarCredential);
+        credential = this.configuration.lookupCredential('APIToken');
+        if (credential) {
+            headers = headers.set('X-API-Token', credential);
         }
 
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'application/json'
             ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
@@ -613,27 +525,20 @@ export class FotaService {
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+            headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
         }
 
         return this.httpClient.patch<Firmware>(`${this.configuration.basePath}/span/collections/${encodeURIComponent(String(existingCollectionId))}/firmware/${encodeURIComponent(String(imageId))}`,
             body,
             {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
+                headers: headers,
                 observe: observe,
                 reportProgress: reportProgress
             }

@@ -13,17 +13,13 @@
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
-        }       from '@angular/common/http';
+         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-// @ts-ignore
-import { Status } from '../model/status';
-// @ts-ignore
-import { SystemInfoResponse } from '../model/systemInfoResponse';
+import { Status } from '../model/models';
+import { SystemInfoResponse } from '../model/models';
 
-// @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
@@ -95,55 +91,43 @@ export class SpanService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSystemInfo(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<SystemInfoResponse>;
-    public getSystemInfo(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<SystemInfoResponse>>;
-    public getSystemInfo(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<SystemInfoResponse>>;
-    public getSystemInfo(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public getSystemInfo(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<SystemInfoResponse>;
+    public getSystemInfo(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<SystemInfoResponse>>;
+    public getSystemInfo(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<SystemInfoResponse>>;
+    public getSystemInfo(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
-        let localVarHeaders = this.defaultHeaders;
+        let headers = this.defaultHeaders;
 
-        let localVarCredential: string | undefined;
+        let credential: string | undefined;
         // authentication (APIToken) required
-        localVarCredential = this.configuration.lookupCredential('APIToken');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('X-API-Token', localVarCredential);
+        credential = this.configuration.lookupCredential('APIToken');
+        if (credential) {
+            headers = headers.set('X-API-Token', credential);
         }
 
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'application/json'
             ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
         }
 
         return this.httpClient.get<SystemInfoResponse>(`${this.configuration.basePath}/span/system`,
             {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
+                headers: headers,
                 observe: observe,
                 reportProgress: reportProgress
             }

@@ -61,11 +61,7 @@ export class Configuration {
         // init default APIToken credential
         if (!this.credentials['APIToken']) {
             this.credentials['APIToken'] = () => {
-                if (this.apiKeys === null || this.apiKeys === undefined) {
-                    return undefined;
-                } else {
-                    return this.apiKeys['APIToken'] || this.apiKeys['X-API-Token'];
-                }
+                return this.apiKeys['APIToken'] || this.apiKeys['X-API-Token'];
             };
         }
     }

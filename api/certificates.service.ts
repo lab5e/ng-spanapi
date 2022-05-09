@@ -13,29 +13,19 @@
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
-        }       from '@angular/common/http';
+         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-// @ts-ignore
-import { CertificateChainResponse } from '../model/certificateChainResponse';
-// @ts-ignore
-import { CreateCertificateRequest } from '../model/createCertificateRequest';
-// @ts-ignore
-import { CreateCertificateResponse } from '../model/createCertificateResponse';
-// @ts-ignore
-import { SignCertificateRequest } from '../model/signCertificateRequest';
-// @ts-ignore
-import { SignCertificateResponse } from '../model/signCertificateResponse';
-// @ts-ignore
-import { Status } from '../model/status';
-// @ts-ignore
-import { VerifyCertificateRequest } from '../model/verifyCertificateRequest';
-// @ts-ignore
-import { VerifyCertificateResponse } from '../model/verifyCertificateResponse';
+import { CertificateChainResponse } from '../model/models';
+import { CreateCertificateRequest } from '../model/models';
+import { CreateCertificateResponse } from '../model/models';
+import { SignCertificateRequest } from '../model/models';
+import { SignCertificateResponse } from '../model/models';
+import { Status } from '../model/models';
+import { VerifyCertificateRequest } from '../model/models';
+import { VerifyCertificateResponse } from '../model/models';
 
-// @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
@@ -129,10 +119,10 @@ export class CertificatesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createCertificate(requestParameters: CreateCertificateRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CreateCertificateResponse>;
-    public createCertificate(requestParameters: CreateCertificateRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CreateCertificateResponse>>;
-    public createCertificate(requestParameters: CreateCertificateRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CreateCertificateResponse>>;
-    public createCertificate(requestParameters: CreateCertificateRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public createCertificate(requestParameters: CreateCertificateRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<CreateCertificateResponse>;
+    public createCertificate(requestParameters: CreateCertificateRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<CreateCertificateResponse>>;
+    public createCertificate(requestParameters: CreateCertificateRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<CreateCertificateResponse>>;
+    public createCertificate(requestParameters: CreateCertificateRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const collectionId = requestParameters.collectionId;
         if (collectionId === null || collectionId === undefined) {
             throw new Error('Required parameter collectionId was null or undefined when calling createCertificate.');
@@ -142,30 +132,25 @@ export class CertificatesService {
             throw new Error('Required parameter body was null or undefined when calling createCertificate.');
         }
 
-        let localVarHeaders = this.defaultHeaders;
+        let headers = this.defaultHeaders;
 
-        let localVarCredential: string | undefined;
+        let credential: string | undefined;
         // authentication (APIToken) required
-        localVarCredential = this.configuration.lookupCredential('APIToken');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('X-API-Token', localVarCredential);
+        credential = this.configuration.lookupCredential('APIToken');
+        if (credential) {
+            headers = headers.set('X-API-Token', credential);
         }
 
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'application/json'
             ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
@@ -175,27 +160,20 @@ export class CertificatesService {
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+            headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
         }
 
         return this.httpClient.post<CreateCertificateResponse>(`${this.configuration.basePath}/span/collections/${encodeURIComponent(String(collectionId))}/certificates/create`,
             body,
             {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
+                headers: headers,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -209,10 +187,10 @@ export class CertificatesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public retrieveCertificateChain(requestParameters: RetrieveCertificateChainRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CertificateChainResponse>;
-    public retrieveCertificateChain(requestParameters: RetrieveCertificateChainRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CertificateChainResponse>>;
-    public retrieveCertificateChain(requestParameters: RetrieveCertificateChainRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CertificateChainResponse>>;
-    public retrieveCertificateChain(requestParameters: RetrieveCertificateChainRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public retrieveCertificateChain(requestParameters: RetrieveCertificateChainRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<CertificateChainResponse>;
+    public retrieveCertificateChain(requestParameters: RetrieveCertificateChainRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<CertificateChainResponse>>;
+    public retrieveCertificateChain(requestParameters: RetrieveCertificateChainRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<CertificateChainResponse>>;
+    public retrieveCertificateChain(requestParameters: RetrieveCertificateChainRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const collectionId = requestParameters.collectionId;
         if (collectionId === null || collectionId === undefined) {
             throw new Error('Required parameter collectionId was null or undefined when calling retrieveCertificateChain.');
@@ -220,61 +198,49 @@ export class CertificatesService {
         const gatewayId = requestParameters.gatewayId;
         const deviceId = requestParameters.deviceId;
 
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        let queryParameters = new HttpParams({encoder: this.encoder});
         if (gatewayId !== undefined && gatewayId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          queryParameters = this.addToHttpParams(queryParameters,
             <any>gatewayId, 'gatewayId');
         }
         if (deviceId !== undefined && deviceId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          queryParameters = this.addToHttpParams(queryParameters,
             <any>deviceId, 'deviceId');
         }
 
-        let localVarHeaders = this.defaultHeaders;
+        let headers = this.defaultHeaders;
 
-        let localVarCredential: string | undefined;
+        let credential: string | undefined;
         // authentication (APIToken) required
-        localVarCredential = this.configuration.lookupCredential('APIToken');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('X-API-Token', localVarCredential);
+        credential = this.configuration.lookupCredential('APIToken');
+        if (credential) {
+            headers = headers.set('X-API-Token', credential);
         }
 
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'application/json'
             ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
         }
 
         return this.httpClient.get<CertificateChainResponse>(`${this.configuration.basePath}/span/collections/${encodeURIComponent(String(collectionId))}/certificates`,
             {
-                context: localVarHttpContext,
-                params: localVarQueryParameters,
-                responseType: <any>responseType_,
+                params: queryParameters,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
+                headers: headers,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -288,10 +254,10 @@ export class CertificatesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public signCertificate(requestParameters: SignCertificateRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<SignCertificateResponse>;
-    public signCertificate(requestParameters: SignCertificateRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<SignCertificateResponse>>;
-    public signCertificate(requestParameters: SignCertificateRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<SignCertificateResponse>>;
-    public signCertificate(requestParameters: SignCertificateRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public signCertificate(requestParameters: SignCertificateRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<SignCertificateResponse>;
+    public signCertificate(requestParameters: SignCertificateRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<SignCertificateResponse>>;
+    public signCertificate(requestParameters: SignCertificateRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<SignCertificateResponse>>;
+    public signCertificate(requestParameters: SignCertificateRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const collectionId = requestParameters.collectionId;
         if (collectionId === null || collectionId === undefined) {
             throw new Error('Required parameter collectionId was null or undefined when calling signCertificate.');
@@ -301,30 +267,25 @@ export class CertificatesService {
             throw new Error('Required parameter body was null or undefined when calling signCertificate.');
         }
 
-        let localVarHeaders = this.defaultHeaders;
+        let headers = this.defaultHeaders;
 
-        let localVarCredential: string | undefined;
+        let credential: string | undefined;
         // authentication (APIToken) required
-        localVarCredential = this.configuration.lookupCredential('APIToken');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('X-API-Token', localVarCredential);
+        credential = this.configuration.lookupCredential('APIToken');
+        if (credential) {
+            headers = headers.set('X-API-Token', credential);
         }
 
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'application/json'
             ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
@@ -334,27 +295,20 @@ export class CertificatesService {
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+            headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
         }
 
         return this.httpClient.post<SignCertificateResponse>(`${this.configuration.basePath}/span/collections/${encodeURIComponent(String(collectionId))}/certificates/sign`,
             body,
             {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
+                headers: headers,
                 observe: observe,
                 reportProgress: reportProgress
             }
@@ -368,10 +322,10 @@ export class CertificatesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public verifyCertificate(requestParameters: VerifyCertificateRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<VerifyCertificateResponse>;
-    public verifyCertificate(requestParameters: VerifyCertificateRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<VerifyCertificateResponse>>;
-    public verifyCertificate(requestParameters: VerifyCertificateRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<VerifyCertificateResponse>>;
-    public verifyCertificate(requestParameters: VerifyCertificateRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public verifyCertificate(requestParameters: VerifyCertificateRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<VerifyCertificateResponse>;
+    public verifyCertificate(requestParameters: VerifyCertificateRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<VerifyCertificateResponse>>;
+    public verifyCertificate(requestParameters: VerifyCertificateRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<VerifyCertificateResponse>>;
+    public verifyCertificate(requestParameters: VerifyCertificateRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const collectionId = requestParameters.collectionId;
         if (collectionId === null || collectionId === undefined) {
             throw new Error('Required parameter collectionId was null or undefined when calling verifyCertificate.');
@@ -381,30 +335,25 @@ export class CertificatesService {
             throw new Error('Required parameter body was null or undefined when calling verifyCertificate.');
         }
 
-        let localVarHeaders = this.defaultHeaders;
+        let headers = this.defaultHeaders;
 
-        let localVarCredential: string | undefined;
+        let credential: string | undefined;
         // authentication (APIToken) required
-        localVarCredential = this.configuration.lookupCredential('APIToken');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('X-API-Token', localVarCredential);
+        credential = this.configuration.lookupCredential('APIToken');
+        if (credential) {
+            headers = headers.set('X-API-Token', credential);
         }
 
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
                 'application/json'
             ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
@@ -414,27 +363,20 @@ export class CertificatesService {
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+            headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
         }
 
         return this.httpClient.post<VerifyCertificateResponse>(`${this.configuration.basePath}/span/collections/${encodeURIComponent(String(collectionId))}/certificates/verify`,
             body,
             {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
+                headers: headers,
                 observe: observe,
                 reportProgress: reportProgress
             }
