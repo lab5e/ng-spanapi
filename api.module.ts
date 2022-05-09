@@ -2,11 +2,13 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
+import { CertificatesService } from './api/certificates.service';
 import { CollectionsService } from './api/collections.service';
 import { DevicesService } from './api/devices.service';
 import { FotaService } from './api/fota.service';
+import { GatewaysService } from './api/gateways.service';
 import { OutputsService } from './api/outputs.service';
-import { SystemService } from './api/system.service';
+import { SpanService } from './api/span.service';
 
 @NgModule({
   imports:      [],

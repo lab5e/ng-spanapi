@@ -1,11 +1,15 @@
+export * from './certificates.service';
+import { CertificatesService } from './certificates.service';
 export * from './collections.service';
 import { CollectionsService } from './collections.service';
 export * from './devices.service';
 import { DevicesService } from './devices.service';
 export * from './fota.service';
 import { FotaService } from './fota.service';
+export * from './gateways.service';
+import { GatewaysService } from './gateways.service';
 export * from './outputs.service';
 import { OutputsService } from './outputs.service';
-export * from './system.service';
-import { SystemService } from './system.service';
-export const APIS = [CollectionsService, DevicesService, FotaService, OutputsService, SystemService];
+export * from './span.service';
+import { SpanService } from './span.service';
+export const APIS = [CertificatesService, CollectionsService, DevicesService, FotaService, GatewaysService, OutputsService, SpanService];

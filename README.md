@@ -1,4 +1,4 @@
-## @lab5e/ng-spanapi@4.1.18
+## @lab5e/ng-spanapi@4.2.3
 
 ### Building
 
@@ -19,7 +19,7 @@ Navigate to the folder of your consuming project and run one of next commands.
 _published:_
 
 ```
-npm install @lab5e/ng-spanapi@4.1.18 --save
+npm install @lab5e/ng-spanapi@4.2.3 --save
 ```
 
 _without publishing (not recommended):_
@@ -152,7 +152,7 @@ export class AppModule {
 
 
 ### Set service base path
-If different than the generated base path, during app bootstrap, you can provide the base path to your service. 
+If different than the generated base path, during app bootstrap, you can provide the base path to your service.
 
 ```
 import { BASE_PATH } from '@lab5e/ng-spanapi';
@@ -200,4 +200,4 @@ import { environment } from '../environments/environment';
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
-```  
+```
