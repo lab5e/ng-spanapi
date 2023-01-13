@@ -34,6 +34,7 @@ export * from './listGatewayResponse';
 export * from './listNetworkResponse';
 export * from './listOutputResponse';
 export * from './listUpstreamMessagesResponse';
+export * from './mQTTMetadata';
 export * from './messageDownstream';
 export * from './messageState';
 export * from './messageTransport';

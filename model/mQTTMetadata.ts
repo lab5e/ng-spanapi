@@ -9,13 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Device } from './device';
 
 
 /**
- * List device response
+ * MQTT metadata for messages received through one of the MQTT endpoints. This is an EXPERIMENTAL feature.
  */
-export interface ListDevicesResponse { 
-    devices?: Array<Device>;
+export interface MQTTMetadata { 
+    topic?: string;
 }
 
