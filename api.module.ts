@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
+import { BlobsService } from './api/blobs.service';
 import { CertificatesService } from './api/certificates.service';
 import { CollectionsService } from './api/collections.service';
 import { DevicesService } from './api/devices.service';

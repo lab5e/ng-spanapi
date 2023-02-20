@@ -1,3 +1,5 @@
+export * from './blobs.service';
+import { BlobsService } from './blobs.service';
 export * from './certificates.service';
 import { CertificatesService } from './certificates.service';
 export * from './collections.service';
@@ -12,4 +14,4 @@ export * from './outputs.service';
 import { OutputsService } from './outputs.service';
 export * from './span.service';
 import { SpanService } from './span.service';
-export const APIS = [CertificatesService, CollectionsService, DevicesService, FotaService, GatewaysService, OutputsService, SpanService];
+export const APIS = [BlobsService, CertificatesService, CollectionsService, DevicesService, FotaService, GatewaysService, OutputsService, SpanService];
