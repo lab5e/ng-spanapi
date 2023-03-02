@@ -67,8 +67,6 @@ model/messageState.ts
 model/messageTransport.ts
 model/messageUpstream.ts
 model/models.ts
-model/networkMetadata.ts
-model/networkOperator.ts
 model/output.ts
 model/outputConfig.ts
 model/outputDataMessage.ts

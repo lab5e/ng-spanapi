@@ -52,8 +52,6 @@ export * from './messageState';
 export * from './messageTransport';
 export * from './messageUpstream';
 export * from './blob';
-export * from './networkMetadata';
-export * from './networkOperator';
 export * from './output';
 export * from './outputConfig';
 export * from './outputDataMessage';
