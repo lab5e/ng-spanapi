@@ -24,4 +24,7 @@ export interface Output {
     enabled?: boolean;
     tags?: { [key: string]: string; };
 }
+export namespace Output {
+}
+
 

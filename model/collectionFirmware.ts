@@ -26,4 +26,7 @@ export interface CollectionFirmware {
     targetFirmwareId?: string;
     management?: FirmwareManagement;
 }
+export namespace CollectionFirmware {
+}
+
 

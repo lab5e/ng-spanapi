@@ -36,4 +36,7 @@ export interface OutputDataMessage {
     gatewayMetaData?: GatewayMetadata;
     gatewayId?: string;
 }
+export namespace OutputDataMessage {
+}
+
 

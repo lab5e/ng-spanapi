@@ -36,4 +36,7 @@ export interface Device {
     lastReceived?: string;
     lastPayload?: string;
 }
+export namespace Device {
+}
+
 

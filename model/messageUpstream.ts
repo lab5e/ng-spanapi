@@ -24,4 +24,7 @@ export interface MessageUpstream {
     received?: string;
     payload?: string;
 }
+export namespace MessageUpstream {
+}
+
 

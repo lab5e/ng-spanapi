@@ -13,10 +13,13 @@ import { GatewayType } from './gatewayType';
 import { GatewayConfig } from './gatewayConfig';
 
 
-export interface InlineObject { 
+export interface CreateGatewayRequest { 
     name?: string;
     type?: GatewayType;
     config?: GatewayConfig;
     tags?: { [key: string]: string; };
 }
+export namespace CreateGatewayRequest {
+}
+
 

@@ -22,4 +22,7 @@ export interface CreateOutputRequest {
     enabled?: boolean;
     tags?: { [key: string]: string; };
 }
+export namespace CreateOutputRequest {
+}
+
 

@@ -27,4 +27,7 @@ export interface MessageDownstream {
     state?: MessageState;
     payload?: string;
 }
+export namespace MessageDownstream {
+}
+
 

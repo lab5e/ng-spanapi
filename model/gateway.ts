@@ -27,4 +27,7 @@ export interface Gateway {
     tags?: { [key: string]: string; };
     status?: GatewayStatus;
 }
+export namespace Gateway {
+}
+
 

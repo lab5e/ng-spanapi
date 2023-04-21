@@ -23,4 +23,7 @@ export interface UpdateOutputRequest {
     enabled?: boolean;
     tags?: { [key: string]: string; };
 }
+export namespace UpdateOutputRequest {
+}
+
 

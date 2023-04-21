@@ -13,11 +13,14 @@ import { GatewayType } from './gatewayType';
 import { GatewayConfig } from './gatewayConfig';
 
 
-export interface InlineObject1 { 
+export interface UpdateGatewayRequest { 
     name?: string;
     collectionId?: string;
     type?: GatewayType;
     config?: GatewayConfig;
     tags?: { [key: string]: string; };
 }
+export namespace UpdateGatewayRequest {
+}
+
 
