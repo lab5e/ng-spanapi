@@ -9,13 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Gateway } from './gateway';
 
 
 /**
- * Response when listing gateways
+ * Statistics for a single data router
  */
-export interface ListGatewayResponse { 
-    gateways?: Array<Gateway>;
+export interface OutputStats { 
+    forwardErrors?: number;
+    messagesForwarded?: number;
+    bytesForwardedMb?: number;
 }
 

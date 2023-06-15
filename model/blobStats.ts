@@ -9,13 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Gateway } from './gateway';
 
 
 /**
- * Response when listing gateways
+ * Statistics for a single blob
  */
-export interface ListGatewayResponse { 
-    gateways?: Array<Gateway>;
+export interface BlobStats { 
+    blobBytesMb?: number;
 }
 

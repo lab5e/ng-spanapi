@@ -9,13 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Gateway } from './gateway';
 
 
 /**
- * Response when listing gateways
+ * This is the statistics for a single device
  */
-export interface ListGatewayResponse { 
-    gateways?: Array<Gateway>;
+export interface DeviceStats { 
+    bytesUpstreamMb?: number;
+    bytesDownstreamMb?: number;
+    messagesUpstream?: number;
+    messagesDownstream?: number;
+    sessionCount?: number;
 }
 
