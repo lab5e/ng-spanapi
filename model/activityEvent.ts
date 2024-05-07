@@ -11,10 +11,12 @@
  */
 
 
-/**
- * MQTT metadata for messages received through one of the MQTT endpoints. This is an EXPERIMENTAL feature.
- */
-export interface MQTTMetadata { 
-    topic?: string;
+export interface ActivityEvent { 
+    event?: string;
+    time?: string;
+    collectionId?: string;
+    deviceId?: string;
+    gatewayId?: string;
+    data?: { [key: string]: string; };
 }
 

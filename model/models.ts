@@ -1,3 +1,4 @@
+export * from './activityEvent';
 export * from './addDownstreamMessageRequest';
 export * from './any';
 export * from './blobStats';
