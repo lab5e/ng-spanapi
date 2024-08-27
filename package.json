@@ -1,6 +1,6 @@
 {
   "name": "@lab5e/ng-spanapi",
-  "version": "4.9.6",
+  "version": "5.0.0",
   "description": "OpenAPI client for @lab5e/ng-spanapi",
   "author": "OpenAPI-Generator Contributors",
   "repository": {

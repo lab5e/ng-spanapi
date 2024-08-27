@@ -9,14 +9,21 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Output } from './output';
+import { OutputConfig } from './outputConfig';
+import { OutputType } from './outputType';
 
 
 /**
- * List outputs
+ * Request type to update outputs
  */
-export interface ListOutputResponse { 
+export interface UpdateOutputBody { 
     collectionId?: string;
-    outputs?: Array<Output>;
+    type?: OutputType;
+    config?: OutputConfig;
+    enabled?: boolean;
+    tags?: { [key: string]: string; };
 }
+export namespace UpdateOutputBody {
+}
+
 
