@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { OutputLogEntry } from './outputLogEntry';
+import { LabeledFirmware } from './labeledFirmware';
 
 
 /**
- * List logs for output
+ * Response object for listing firmware images
  */
-export interface OutputLogResponse { 
-    logs?: Array<OutputLogEntry>;
+export interface ListLabeledFirmwareResponse { 
+    images?: Array<LabeledFirmware>;
 }
 

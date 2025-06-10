@@ -9,13 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { OutputLogEntry } from './outputLogEntry';
 
 
 /**
- * List logs for output
+ * This is a reference data structure for an uploaded firmware image
  */
-export interface OutputLogResponse { 
-    logs?: Array<OutputLogEntry>;
+export interface ImageUploadReference { 
+    imageRef?: string;
+    createdAt?: string;
+    fileName?: string;
+    length?: string;
+    checksum?: string;
+    sha256?: string;
 }
 
