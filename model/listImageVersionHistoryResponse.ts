@@ -9,22 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageTransport } from './messageTransport';
+import { ImageVersionEntry } from './imageVersionEntry';
 
 
 /**
- * This is the messages sent from the device to the backend service
+ * Response obejct when listing image version log for a device
  */
-export interface MessageUpstream { 
-    messageId?: string;
+export interface ListImageVersionHistoryResponse { 
     collectionId?: string;
-    deviceId?: string;
-    gatewayId?: string;
-    transport?: MessageTransport;
-    received?: string;
-    payload?: string;
+    log?: Array<ImageVersionEntry>;
 }
-export namespace MessageUpstream {
-}
-
 

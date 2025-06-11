@@ -9,22 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageTransport } from './messageTransport';
 
 
 /**
- * This is the messages sent from the device to the backend service
+ * The image version log contains all reported versions and firmware images  by a device. The entries in the version log is independent of the image list;  if an image is removed the entry will remain in the version log.
  */
-export interface MessageUpstream { 
-    messageId?: string;
-    collectionId?: string;
+export interface ImageVersionEntry { 
     deviceId?: string;
-    gatewayId?: string;
-    transport?: MessageTransport;
-    received?: string;
-    payload?: string;
+    imageId?: string;
+    imageVersion?: string;
+    imageLabel?: string;
+    reported?: string;
 }
-export namespace MessageUpstream {
-}
-
 

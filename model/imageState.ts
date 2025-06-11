@@ -9,22 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageTransport } from './messageTransport';
 
 
 /**
- * This is the messages sent from the device to the backend service
+ * State for a single image on a device
  */
-export interface MessageUpstream { 
-    messageId?: string;
+export interface ImageState { 
     collectionId?: string;
     deviceId?: string;
-    gatewayId?: string;
-    transport?: MessageTransport;
-    received?: string;
-    payload?: string;
+    imageId?: string;
+    updated?: string;
+    state?: string;
+    message?: string;
 }
-export namespace MessageUpstream {
-}
-
 

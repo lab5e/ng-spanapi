@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DeviceImageState } from './deviceImageState';
 
 
 /**
- * Request object to create a new certificate.
+ * Response object when retrieving image state for a single device
  */
-export interface CreateCertificateBody { 
-    gatewayId?: string;
-    deviceId?: string;
+export interface GetImageStateResponse { 
+    state?: DeviceImageState;
 }
 

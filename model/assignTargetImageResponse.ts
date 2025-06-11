@@ -9,22 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MessageTransport } from './messageTransport';
 
 
 /**
- * This is the messages sent from the device to the backend service
+ * Response object when assigning an image to a collection or collection/device
  */
-export interface MessageUpstream { 
-    messageId?: string;
+export interface AssignTargetImageResponse { 
     collectionId?: string;
+    imageId?: string;
     deviceId?: string;
-    gatewayId?: string;
-    transport?: MessageTransport;
-    received?: string;
-    payload?: string;
 }
-export namespace MessageUpstream {
-}
-
 
